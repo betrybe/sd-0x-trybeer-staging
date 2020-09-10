@@ -15,8 +15,8 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-require('dotenv').config();
-const  my = require('mysql2');
+require('dotenv').config()
+const  my = require('mysql2')
 
 function queryTestDb(query, config) {
   const connection = my.createConnection({host: process.env.HOSTNAME, user: process.env.MYSQL_USER, password: process.env.MYSQL_PASSWORD})
@@ -33,11 +33,9 @@ function queryTestDb(query, config) {
 }
 
 module.exports = (on, config) => {
- 
-  
-    on('task', {
-      queryDb: query => {
-        return queryTestDb(query, config)
-      }
-    })
+  on('task', {
+    queryDb: query => {
+      return queryTestDb(query, config)
+    }
+  })
 }
