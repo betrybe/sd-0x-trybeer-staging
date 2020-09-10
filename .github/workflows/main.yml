@@ -20,7 +20,7 @@ jobs:
         id: evaluator
         uses: betrybe/cypress-evaluator-action@fix-outmemory
         with:
-          repository-test-name: 'betrybe/sd-0x-trybeer-tests'
+          repository-test-name: 'betrybe/branch_com_menos_fotos'
           repository-test-branch: 'master'
           npm-start: true
         env:
