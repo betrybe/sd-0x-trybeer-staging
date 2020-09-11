@@ -21,7 +21,7 @@ jobs:
         uses: betrybe/cypress-evaluator-action@v4
         with:
           repository-test-name: 'betrybe/sd-0x-trybeer-tests'
-          repository-test-branch: 'master'
+          repository-test-branch: 'disable-shm-usage-on-chrome'
           npm-start: true
         env:
           MYSQL_USER: 'root'
