@@ -15,8 +15,8 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-require('dotenv').config()
-const  my = require('mysql2')
+require('dotenv').config();
+const  my = require('mysql2');
 
 function queryTestDb(query, config) {
   const connection = my.createConnection({host: process.env.HOSTNAME, user: process.env.MYSQL_USER, password: process.env.MYSQL_PASSWORD})
@@ -38,4 +38,12 @@ module.exports = (on, config) => {
       return queryTestDb(query, config)
     }
   })
+
+  on('before:browser:launch', (browser, launchOptions) => {
+    if (browser.name === 'chrome') {
+      launchOptions.args.push('--disable-dev-shm-usage');
+      return launchOptions;
+    }
+    return launchOptions;
+  });
 }
