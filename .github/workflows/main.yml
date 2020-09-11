@@ -20,8 +20,8 @@ jobs:
         id: evaluator
         uses: betrybe/cypress-evaluator-action@fix-outmemory
         with:
-          repository-test-name: 'betrybe/branch_com_menos_fotos'
-          repository-test-branch: 'master'
+          repository-test-name: 'betrybe/sd-0x-trybeer-tests'
+          repository-test-branch: 'disable-shm-usage-on-chrome'
           npm-start: true
         env:
           MYSQL_USER: 'root'
