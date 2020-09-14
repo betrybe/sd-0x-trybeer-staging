@@ -41,8 +41,7 @@ const getSaleBy = async (paramKey, paramValue) => {
     .execute()
     .then((results) => results.fetchAll() || [])
     .then((sales) => sales.map(
-      ([id, totalPrice, saleDate]) =>
-        ({ saleId: id, totalPrice, saleDate }),
+      ([id, totalPrice, saleDate]) => ({ saleId: id, totalPrice, saleDate }),
     ));
   if (!result.length) return null;
   return result;
@@ -61,8 +60,9 @@ const getAllSales = async () => {
     .execute()
     .then((results) => results.fetchAll())
     .then((sales) => sales.map(
-      ([id, totalPrice, deliveryAddress, deliveryNumber, status]) =>
-        ({ saleId: id, totalPrice, deliveryAddress, deliveryNumber, status }),
+      ([id, totalPrice, deliveryAddress,
+        deliveryNumber,
+        status]) => ({ saleId: id, totalPrice, deliveryAddress, deliveryNumber, status }),
     ));
   if (!result.length) return null;
   return result;
@@ -82,8 +82,8 @@ const getSaleProductsByUserId = async (userId, paramSaleId) => {
     .execute()
     .then((results) => results.fetchAll())
     .then((saleProducts) => saleProducts.map(
-      ([saleId, name, quantity, price, totalPrice, saleDate]) =>
-        ({ saleId, name, quantity, price, totalPrice, saleDate }),
+      ([saleId, name, quantity, price,
+        totalPrice, saleDate]) => ({ saleId, name, quantity, price, totalPrice, saleDate }),
     ));
   if (!result.length) return null;
   return result;
@@ -102,8 +102,8 @@ const getAllSaleProducts = async (paramSaleId) => {
     .execute()
     .then((results) => results.fetchAll())
     .then((saleProducts) => saleProducts.map(
-      ([saleId, name, quantity, price, totalPrice, status]) =>
-        ({ saleId, name, quantity, price, totalPrice, status }),
+      ([saleId, name, quantity,
+        price, totalPrice, status]) => ({ saleId, name, quantity, price, totalPrice, status }),
     ));
   if (!result.length) return null;
   return result;
