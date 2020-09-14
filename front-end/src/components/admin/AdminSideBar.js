@@ -5,14 +5,12 @@ import '../../styles/AdminSideBar.css';
 const redirectPage = (route) => history.push(route);
 
 const sideBarButtons = (text, dataTestId, route) => {
-  // if (route === '/login') localStorage.removeItem('user');
   return (
     <button data-testid={dataTestId} type='button' onClick={() => redirectPage(route)}>
       {text}
     </button>
-  )
+  );
 };
-
 
 const AdminSideBar = () => {
   return (

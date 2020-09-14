@@ -9,8 +9,7 @@ const getAllProducts = async () => {
     .execute()
     .then((results) => results.fetchAll())
     .then((products) => products.map(
-      ([id, name, price, urlImage]) =>
-        ({ id, name, price, urlImage }),
+      ([id, name, price, urlImage]) => ({ id, name, price, urlImage }),
     ));
   return result;
 };
