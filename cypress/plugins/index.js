@@ -37,7 +37,7 @@ module.exports = (on, config) => {
     queryDb: query => {
       return queryTestDb(query, config)
     }
-  })
+  });
 
   on('before:browser:launch', (browser, launchOptions) => {
     if (browser.name === 'chrome') {
