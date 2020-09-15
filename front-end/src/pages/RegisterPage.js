@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import history from '../services/history';
 import axios from 'axios';
+import history from '../services/history';
 
 import '../styles/RegisterPage.css';
 
@@ -8,32 +8,33 @@ const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
 const NAME_REGEX = /[^A-Za-z ]/;
 
 const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, role) => (
-  <label htmlFor={text} className={`label-${text}`}>
+  <label htmlFor={ text } className={ `label-${text}` }>
     {text}
     <br />
     <input
-      type={type}
-      name={text}
-      value={valueOrChecked[role]}
-      checked={valueOrChecked[role]}
-      data-testid={testId}
+      type={ type }
+      name={ text }
+      value={ valueOrChecked[role] }
+      checked={ valueOrChecked[role] }
+      data-testid={ testId }
       onChange={
         (type !== 'checkbox')
           ? ({ target: { value } }) => setValue((prev) => ({ ...prev, [role]: value }))
-          : ({ target: { checked } }) => setValue((prev) => ({ ...prev, [role]: checked }))}
+          : ({ target: { checked } }) => setValue((prev) => ({ ...prev, [role]: checked }))
+      }
     />
   </label>
 );
 
 const sendLoginRequest = async (email, password, setErrorMessage) => {
   const loginData = await axios({
-    baseURL: `http://localhost:3001/login`,
+    baseURL: 'http://localhost:3001/login',
     method: 'post',
     data: {
       email,
-      password
+      password,
     },
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   })
     .catch(({ response }) => response);
   // .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
@@ -49,14 +50,20 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
   /*  .catch(({ response: { data: { error } } }) => setErrorMessage(error));
   if (loginData) addLocalStorage(loginData.data);
 
-  return loginData ? registerRedirect(loginData.data.role) : null;*/
+  return loginData ? registerRedirect(loginData.data.role) : null; */
 };
 
-const addLocalStorage = ({ name, email, token, role }) => {
-  localStorage.setItem('user', JSON.stringify({ name, email, token, role }));
+const addLocalStorage = ({
+  name, email, token, role,
+}) => {
+  localStorage.setItem('user', JSON.stringify({
+    name, email, token, role,
+  }));
 };
 
-const requestRegister = async ({ nameData, emailData, passData, sellerData }, setSuccessOrError) => {
+const requestRegister = async ({
+  nameData, emailData, passData, sellerData,
+}, setSuccessOrError) => {
   const role = (sellerData) ? 'true' : 'false';
   const resp = await axios.post('http://localhost:3001/users',
     {
@@ -80,13 +87,13 @@ const registerRedirect = (role) => (
 
 const verifyValues = (inputsData) => {
   if (!inputsData.nameData || inputsData.nameData.length < 12 || typeof inputsData.nameData !== 'string' || inputsData.nameData.match(NAME_REGEX)) {
-    return { error: 'name' }
-  };
+    return { error: 'name' };
+  }
   if (!inputsData.passData || inputsData.passData.length < 6 || isNaN(inputsData.passData)) {
-    return { error: 'pass' }
-  };
+    return { error: 'pass' };
+  }
   if (!inputsData.emailData.match(MAIL_REGEX)) {
-    return { error: 'email' }
+    return { error: 'email' };
   }
   return true;
 };
@@ -96,7 +103,7 @@ const clearFields = (setInputsData) => {
     emailData: '',
     passData: '',
     nameData: '',
-    sellerData: false
+    sellerData: false,
   });
 };
 
@@ -138,15 +145,15 @@ const RegisterPage = () => {
       {(successOrError === '') || <h2>{`Error: ${successOrError.message}`}</h2>}
       <form
         className="register-form-container"
-        onSubmit={(e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError)}
+        onSubmit={ (e) => handleSubmit(e, inputsData, setInputsData, setSuccessOrError) }
       >
-        {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, "signup-name", 'nameData')}
-        {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, "signup-email", 'emailData')}
-        {textAndCheckboxInputs('password', 'Password', inputsData, setInputsData, "signup-password", 'passData')}
+        {textAndCheckboxInputs('text', 'Nome', inputsData, setInputsData, 'signup-name', 'nameData')}
+        {textAndCheckboxInputs('text', 'Email', inputsData, setInputsData, 'signup-email', 'emailData')}
+        {textAndCheckboxInputs('password', 'Password', inputsData, setInputsData, 'signup-password', 'passData')}
         {textAndCheckboxInputs(
-          'checkbox', 'Quero Vender', inputsData, setInputsData, "signup-seller", 'sellerData',
+          'checkbox', 'Quero Vender', inputsData, setInputsData, 'signup-seller', 'sellerData',
         )}
-        <input type="submit" value="Cadastrar" data-testid="signup-btn" disabled={disabled.error} />
+        <input type="submit" value="Cadastrar" data-testid="signup-btn" disabled={ disabled.error } />
       </form>
     </div>
   );

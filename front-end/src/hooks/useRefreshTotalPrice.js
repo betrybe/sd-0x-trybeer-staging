@@ -8,8 +8,8 @@ export default function useRefreshTotalPrice(sensorVariable) {
       const currentCart = JSON.parse(localStorage.getItem('cart'));
       const cartTotalPrice = currentCart ? currentCart.reduce((total, { totalValue }) => total + totalValue, 0) : 0;
       setTotalPrice(cartTotalPrice);
-    }
-    refreshTotalPrice()
+    };
+    refreshTotalPrice();
   }, [setTotalPrice, sensorVariable]);
 
   return totalPrice;

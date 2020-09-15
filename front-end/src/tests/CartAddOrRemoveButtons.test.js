@@ -10,7 +10,7 @@ const product = {
   name: 'Skol',
   price: 3.33,
   urlImage: 'localhost:3001/Skol',
-}
+};
 
 const productMock = [
   {
@@ -27,8 +27,8 @@ describe('testing CartAddOrRemoveButtons', () => {
   test('if component is rendering', () => {
     const { queryByTestId } = render(
       <Provider>
-        <CartAddOrRemoveButtons product={product} index={index} />
-      </Provider>
+        <CartAddOrRemoveButtons product={ product } index={ index } />
+      </Provider>,
     );
     expect(queryByTestId(`${index}-product-minus`)).toBeInTheDocument();
     expect(queryByTestId(`${index}-product-minus`).tagName).toBe('BUTTON');
@@ -40,8 +40,8 @@ describe('testing CartAddOrRemoveButtons', () => {
   test('if add button and remove button is working', () => {
     const { queryByTestId } = render(
       <Provider>
-        <CartAddOrRemoveButtons product={product} index={index} />
-      </Provider>
+        <CartAddOrRemoveButtons product={ product } index={ index } />
+      </Provider>,
     );
     const addButton = queryByTestId(`${index}-product-plus`);
     const removeButton = queryByTestId(`${index}-product-minus`);
@@ -65,11 +65,10 @@ describe('testing CartAddOrRemoveButtons', () => {
     localStorage.setItem('cart', JSON.stringify(productMock));
     const { queryByTestId } = render(
       <Provider>
-        <CartAddOrRemoveButtons product={product} index={index} />
-      </Provider>
+        <CartAddOrRemoveButtons product={ product } index={ index } />
+      </Provider>,
     );
     const addButton = queryByTestId(`${index}-product-plus`);
-    const removeButton = queryByTestId(`${index}-product-minus`);
     fireEvent.click(addButton);
   });
 });

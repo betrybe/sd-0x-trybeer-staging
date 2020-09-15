@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import history from '../../services/history';
 import ProductCard from '../../components/ProductCard';
 import CheckoutButton from '../../components/CheckoutButton';
-import axios from 'axios';
 import '../../styles/Products.css';
 
 export default function ClientProducts() {
-  const [productData, setProductData] = useState([])
+  const [productData, setProductData] = useState([]);
   const [errorStatus, setErrorStatus] = useState('');
 
   useEffect(() => {
@@ -16,9 +16,9 @@ export default function ClientProducts() {
 
       const { token } = JSON.parse(localStorage.getItem('user'));
       const resp = await axios({
-        baseURL: `http://localhost:3001/products`,
+        baseURL: 'http://localhost:3001/products',
         method: 'get',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
       })
         .catch(({ response: { status, data: { error: { message } } } }) => {
           setErrorStatus(`Error: ${status}. ${message}`);
@@ -38,11 +38,11 @@ export default function ClientProducts() {
       </div>
       <div className="products-container">
         {productData && productData.map((product, index) => (
-          <div className="product-card" key={product.id}><ProductCard product={product} index={index} /></div>))}
+          <div className="product-card" key={ product.id }><ProductCard product={ product } index={ index } /></div>))}
       </div>
       <div className="checkout-btn-container">
         <CheckoutButton />
       </div>
     </div>
-  )
+  );
 }

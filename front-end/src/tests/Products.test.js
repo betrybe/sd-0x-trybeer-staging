@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
+import axios from 'axios';
 import history from '../services/history';
 import ClientProducts from '../pages/client/Products';
-import axios from 'axios';
 import Provider from '../context/TrybeerContext';
 
 const usersMock = {
@@ -12,31 +12,25 @@ const usersMock = {
   token: '12345677',
 };
 
-const usersMockWithoutToken = {
-  email: 'jctaraujo@hotmail.com',
-  name: 'Julio Cezar',
-  role: 'client',
-}
-
 const dataSuccess = {
   data: [
     {
       id: 1,
-      name: "Skol Lata 250ml",
+      name: 'Skol Lata 250ml',
       price: 2.2,
-      urlImage: "http://localhost:3001/images/Skol Lata 350ml.jpg",
+      urlImage: 'http://localhost:3001/images/Skol Lata 350ml.jpg',
     },
     {
       id: 2,
-      name: "Heineken 600ml",
+      name: 'Heineken 600ml',
       price: 7.5,
-      urlImage: "http://localhost:3001/images/Heineken 600ml.jpg",
+      urlImage: 'http://localhost:3001/images/Heineken 600ml.jpg',
     },
     {
       id: 3,
-      name: "Antarctica Pilsen 300ml",
+      name: 'Antarctica Pilsen 300ml',
       price: 2.49,
-      urlImage: "http://localhost:3001/images/Antarctica Pilsen 300ml.jpg",
+      urlImage: 'http://localhost:3001/images/Antarctica Pilsen 300ml.jpg',
     },
   ],
 };
@@ -46,7 +40,7 @@ const dataError = {
     status: 404,
     data: {
       error: {
-        message: 'expired'
+        message: 'expired',
       },
     },
   },
@@ -64,22 +58,17 @@ describe('Products page tests', () => {
     const { findByTestId } = render(
       <Provider>
         <ClientProducts />
-      </Provider>
+      </Provider>,
     );
     expect(history.location.pathname).toBe('/products');
-    await findByTestId("checkout-bottom-btn");
+    await findByTestId('checkout-bottom-btn');
     await wait();
   });
   test('if rediret to /login when user is null', async () => {
     // localStorage.setItem('user', JSON.stringify(usersMock));
     history.push('/products');
     axios.mockResolvedValue(dataSuccess);
-    const { findByTestId } = render(
-      <Provider>
-        <ClientProducts />
-      </Provider>
-    );
-    await wait()
+    await wait();
     expect(history.location.pathname).toBe('/login');
   });
   test('if api return error', async () => {
@@ -89,7 +78,7 @@ describe('Products page tests', () => {
     const { queryByText } = render(
       <Provider>
         <ClientProducts />
-      </Provider>
+      </Provider>,
     );
     expect(history.location.pathname).toBe('/products');
     await wait();
@@ -102,7 +91,7 @@ describe('Products page tests', () => {
     const { queryByText } = render(
       <Provider>
         <ClientProducts />
-      </Provider>
+      </Provider>,
     );
     expect(history.location.pathname).toBe('/products');
     await wait();

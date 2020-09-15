@@ -18,21 +18,21 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Router history={history}>
+      <Router history={ history }>
         <TopMenu />
         <ClientSideBar />
         <Switch>
-          <Route exact path="/admin/orders" component={AdminOrders} />
-          <Route exact path="/admin/orders/:id" component={AdminOrdersDetails} />
-          <Route exact path="/admin/profile" component={AdminProfile} />
-          <Route exact path="/products" component={ClientProducts} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/orders" component={OrdersPage} />
-          <Route exact path="/orders/:orderId" component={OrdersDetails} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/checkout" component={Checkout} />
-          <Route exact path="/" render={() => history.push('/login')} />
+          <Route exact path="/admin/orders" component={ AdminOrders } />
+          <Route exact path="/admin/orders/:id" component={ AdminOrdersDetails } />
+          <Route exact path="/admin/profile" component={ AdminProfile } />
+          <Route exact path="/products" component={ ClientProducts } />
+          <Route exact path="/login" component={ Login } />
+          <Route exact path="/register" component={ RegisterPage } />
+          <Route exact path="/orders" component={ OrdersPage } />
+          <Route exact path="/orders/:orderId" component={ OrdersDetails } />
+          <Route exact path="/profile" component={ Profile } />
+          <Route exact path="/checkout" component={ Checkout } />
+          <Route exact path="/" render={ () => history.push('/login') } />
         </Switch>
       </Router>
     </div>

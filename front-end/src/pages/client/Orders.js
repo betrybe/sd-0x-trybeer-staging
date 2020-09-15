@@ -8,11 +8,11 @@ const sendRequestOrders = async (setErrorStatus) => {
   const resp = await axios({
     baseURL: 'http://localhost:3001/sales',
     method: 'get',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
   })
     .catch(({ response: { status, data: { error: { message } } } }) => {
       if (status === 404) {
-        setErrorStatus('Você ainda não tem nenhum pedido.')
+        setErrorStatus('Você ainda não tem nenhum pedido.');
         return true;
       }
       setErrorStatus(`Error: ${status}. ${message}`);
@@ -38,9 +38,9 @@ const Orders = () => {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <div className='orders-container'>
-      {error ||
-        data.map((orders, index) => <OrdersCard key={orders.saleId} orders={orders} index={index} />)}
+    <div className="orders-container">
+      {error
+        || data.map((orders, index) => <OrdersCard key={ orders.saleId } orders={ orders } index={ index } />)}
     </div>
   );
 };

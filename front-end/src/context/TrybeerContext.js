@@ -15,7 +15,7 @@ export default function TrybeerProvider({ children }) {
     ordersAdminPage: [ordersData, setOrdersData],
   };
 
-  return <TrybeerContext.Provider value={store}>{children}</TrybeerContext.Provider>;
+  return <TrybeerContext.Provider value={ store }>{children}</TrybeerContext.Provider>;
 }
 
 TrybeerProvider.propTypes = {

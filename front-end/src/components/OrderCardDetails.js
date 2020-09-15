@@ -4,17 +4,15 @@ import formatPriceFunc from '../services/formatPriceFunc';
 import '../styles/OrderCardDetails.css';
 
 const showSaleProducts = (products) => (
-  products.map(({ name, price, quantity }, index) =>
-    <div key={name} className="card-details-mid-container">
-      <div data-testid={`${index}-product-qtd`}>
-        {`${quantity} -`}
-      </div>
-      <div data-testid={`${index}-product-name`}>{name}</div>
-      <div data-testid={`${index}-product-total-value`}>
-        {formatPriceFunc(quantity * price)}
-      </div>
+  products.map(({ name, price, quantity }, index) => (<div key={ name } className="card-details-mid-container">
+    <div data-testid={ `${index}-product-qtd` }>
+      {`${quantity} -`}
     </div>
-  )
+    <div data-testid={ `${index}-product-name` }>{name}</div>
+    <div data-testid={ `${index}-product-total-value` }>
+      {formatPriceFunc(quantity * price)}
+    </div>
+                                                      </div>))
 );
 
 const OrderCardDetails = ({ data, id }) => {
@@ -30,7 +28,7 @@ const OrderCardDetails = ({ data, id }) => {
         {`Total: ${formatPriceFunc(data[0].totalPrice)}`}
       </div>
     </div>
-  )
+  );
 };
 
 export default OrderCardDetails;

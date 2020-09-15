@@ -8,8 +8,8 @@ export default function AdminProfile() {
   useEffect(() => {
     // console.log(isLoggedIn);
 
-    if (!isLoggedIn) history.push('/login')
-  }, [isLoggedIn])
+    if (!isLoggedIn) history.push('/login');
+  }, [isLoggedIn]);
   if (!isLoggedIn) return null;
   const { name, email } = isLoggedIn;
   return (
@@ -25,14 +25,14 @@ export default function AdminProfile() {
         </div>
       </div>
       <div>
-        <p data-testid="side-menu-item-orders" onClick={() => history.push('/admin/orders')}>Pedidos</p>
+        <p data-testid="side-menu-item-orders" onClick={ () => history.push('/admin/orders') }>Pedidos</p>
       </div>
       <div>
-        <p data-testid="side-menu-item-profile" onClick={() => history.push('/admin/profile')}>Perfil</p>
+        <p data-testid="side-menu-item-profile" onClick={ () => history.push('/admin/profile') }>Perfil</p>
       </div>
       <div>
-        <p data-testid="side-menu-item-logout" onClick={() => history.push('/login')}>Sair</p>
+        <p data-testid="side-menu-item-logout" onClick={ () => history.push('/login') }>Sair</p>
       </div>
     </div>
-  )
+  );
 }

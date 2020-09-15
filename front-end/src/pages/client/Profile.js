@@ -1,23 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import history from '../../services/history';
 import axios from 'axios';
+import history from '../../services/history';
 import '../../styles/Profile.css';
 
-const verifyLocalStorage = () => {
-  return JSON.parse(localStorage.getItem('user'));
+const verifyLocalStorage = () => JSON.parse(localStorage.getItem('user'));
+
+const sendRequestNewName = async (newUser, setErrorStatus) => {
+  const resp = await axios({
+    baseURL: 'http://localhost:3001/users/me',
+    method: 'patch',
+    data: { name: newUser.name },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: newUser.token,
+    },
+  })
+    .catch(({ response: { status, data: { error: { message } } } }) => setErrorStatus(`Error: ${status}. ${message}`));
+  if (resp) {
+    localStorage.setItem('user', JSON.stringify(newUser));
+    setErrorStatus('Atualização concluída com sucesso');
+  }
 };
 
 const emailAndNameInputs = (type, text, value, setValue, testId) => (
-  <label htmlFor={text} className={`${text}-label`}>
+  <label htmlFor={ text } className={ `${text}-label` }>
     {text}
     <br />
     <input
-      readOnly={(text === 'email') || false}
-      type={type}
-      name={text}
-      defaultValue={value}
-      data-testid={testId}
-      onChange={({ target }) => setValue((prev) => ({ ...prev, name: target.value }))}
+      readOnly={ (text === 'email') || false }
+      type={ type }
+      name={ text }
+      defaultValue={ value }
+      data-testid={ testId }
+      onChange={ ({ target }) => setValue((prev) => ({ ...prev, name: target.value })) }
     />
   </label>
 );
@@ -26,31 +42,12 @@ const saveBtn = (disabled, user, setError) => (
   <button
     type="button"
     data-testid="profile-save-btn"
-    disabled={disabled}
-    onClick={() => sendRequestNewName(user, setError)}
+    disabled={ disabled }
+    onClick={ () => sendRequestNewName(user, setError) }
   >
     Salvar
   </button>
 );
-
-const sendRequestNewName = async (newUser, setErrorStatus) => {
-  const resp = await axios({
-    baseURL: 'http://localhost:3001/users/me',
-    method: 'patch',
-    data: { name: newUser.name },
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': newUser.token
-    }
-  })
-    .catch(({ response: { status, data: { error: { message } } } }) =>
-      setErrorStatus(`Error: ${status}. ${message}`));
-  if (resp) {
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setErrorStatus(`Atualização concluída com sucesso`);
-  };
-};
 
 const Profile = () => {
   const [user, setUser] = useState('');

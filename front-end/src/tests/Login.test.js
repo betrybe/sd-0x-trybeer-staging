@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
+import axios from 'axios';
+import { Router } from 'react-router-dom';
 import history from '../services/history';
 import Login from '../pages/Login';
-import axios from 'axios';
 
 const usersMock = {
   data: {
@@ -10,7 +11,7 @@ const usersMock = {
     name: 'Tryber Tryber',
     role: 'client',
     token: '123456',
-  }
+  },
 };
 
 const usersAdminMock = {
@@ -19,7 +20,7 @@ const usersAdminMock = {
     name: 'Lipe Tryber',
     role: 'administrator',
     token: '123456',
-  }
+  },
 };
 
 const dataError = {
@@ -27,7 +28,7 @@ const dataError = {
     status: 401,
     data: {
       error: {
-        message: 'Error: 401. E-mail not found.'
+        message: 'Error: 401. E-mail not found.',
       },
     },
   },
@@ -41,7 +42,7 @@ beforeEach(() => localStorage.clear());
 describe('Testing Login Page', () => {
   test('Testing if HTML elements appears', () => {
     const { queryByTestId } = render(
-      <Login />
+      <Login />,
     );
     const emailInput = queryByTestId('email-input');
     expect(emailInput).toBeInTheDocument();
@@ -55,9 +56,9 @@ describe('Testing Login Page', () => {
 
   test('Testing funcionality of HTML elements', () => {
     const { queryByTestId } = render(
-      <Login />
+      <Login />,
     );
-    
+
     const emailInput = queryByTestId('email-input');
     const passInput = queryByTestId('password-input');
     const signInButton = queryByTestId('signin-btn');
@@ -80,19 +81,19 @@ describe('Testing Login Page', () => {
 
   test('Testing new user button', async () => {
     const { queryByTestId } = render(
-      <Router history={history}>
+      <Router history={ history }>
         <Login />
-      </Router>
+      </Router>,
     );
-    
+
     const noAccountButton = queryByTestId('no-account-btn');
     fireEvent.click(noAccountButton);
     expect(history.location.pathname).toBe('/register');
   });
 
   test('Testing login button with client user', async () => {
-    const {queryByTestId} = render(
-      <Login />
+    const { queryByTestId } = render(
+      <Login />,
     );
 
     const emailInput = queryByTestId('email-input');
@@ -109,7 +110,7 @@ describe('Testing Login Page', () => {
 
   test('Testing axios catch in login button', async () => {
     const { queryByTestId, getByText } = render(
-      <Login />
+      <Login />,
     );
 
     const emailInput = queryByTestId('email-input');
@@ -125,8 +126,8 @@ describe('Testing Login Page', () => {
   });
 
   test('Testing login button with administrator user', async () => {
-    const {queryByTestId} = render(
-      <Login />
+    const { queryByTestId } = render(
+      <Login />,
     );
 
     const emailInput = queryByTestId('email-input');

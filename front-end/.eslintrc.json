@@ -13,7 +13,9 @@
     },
     "plugins": ["react", "react-hooks"],
     "rules": {
-      "indent": ["error", 2],
+      "react/prop-types": "warn", //remover depois
+      "consistent-return": ["off"],
+      //"indent": ["error", 2],
       "linebreak-style": ["error", "unix"],
       "quotes": ["error", "single"],
       "semi": ["error", "always"],
@@ -37,10 +39,10 @@
         }
       ],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      //"react/default-props-match-prop-types": ["error", { "allowRequiredDefaults": false }],
+      "react/default-props-match-prop-types": ["error", { "allowRequiredDefaults": false }],
       "react/destructuring-assignment": ["error", "always"],
       "react/forbid-component-props": ["error"],
-      //"react/forbid-prop-types": ["error"],
+      "react/forbid-prop-types": ["error"],
       "react/no-did-mount-set-state": ["error"],
       "react/no-did-update-set-state": ["error"],
       "react/no-multi-comp": ["error", { "ignoreStateless": false }],
@@ -63,15 +65,15 @@
       "react/jsx-no-useless-fragment": ["error"],
       "react/jsx-curly-spacing": ["error", { "when": "always" }],
       "react/jsx-equals-spacing": ["error", "never"],
-      //"react/jsx-first-prop-new-line": ["error", "multiline"],
+      "react/jsx-first-prop-new-line": ["error", "multiline"],
       "react/jsx-indent": [
         "error",
         2,
         { "checkAttributes": true, "indentLogicalExpressions": true }
       ],
-      //"react/jsx-indent-props": ["error", 2],
+      "react/jsx-indent-props": ["error", 2],
       "react/jsx-key": ["error"],
-      //"react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }],
+      "react/jsx-max-props-per-line": ["error", { "maximum": 1, "when": "multiline" }],
       "react/jsx-tag-spacing": [
         "error",
         {
@@ -89,8 +91,8 @@
           "return": "parens",
           "arrow": "parens",
           "condition": "ignore",
-          "logical": "ignore"
-          //"prop": "ignore"
+          "logical": "ignore",
+          "prop": "ignore"
         }
       ],
         "react-hooks/rules-of-hooks": "error",

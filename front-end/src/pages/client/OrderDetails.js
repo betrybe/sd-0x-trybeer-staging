@@ -3,8 +3,6 @@ import axios from 'axios';
 import history from '../../services/history';
 import OrderCardDetails from '../../components/OrderCardDetails';
 
-
-
 const sendRequestOrdersDetails = async (saleId, setErrorStatus) => {
   const isUserLogged = JSON.parse(localStorage.getItem('user'));
   if (isUserLogged === null) return history.push('/login');
@@ -12,7 +10,7 @@ const sendRequestOrdersDetails = async (saleId, setErrorStatus) => {
   const resp = await axios({
     baseURL: `http://localhost:3001/sales/${saleId}`,
     method: 'get',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': token }
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
   })
     .catch(({ response: { status, data: { error: { message } } } }) => {
       setErrorStatus(`Error: ${status}. ${message}`);
@@ -32,7 +30,7 @@ const OrderDetails = ({ match: { params: { orderId } } }) => {
     if (!isLSExist || !isLSExist.token) history.push('/login');
     const fetchOrderDetails = async () => {
       setData(await sendRequestOrdersDetails(orderId, setErrorStatus));
-    }
+    };
     fetchOrderDetails();
   }, [orderId, setErrorStatus]);
 
@@ -40,7 +38,7 @@ const OrderDetails = ({ match: { params: { orderId } } }) => {
 
   return (
     <div>
-      <OrderCardDetails data={data} id={orderId} />
+      <OrderCardDetails data={ data } id={ orderId } />
     </div>
   );
 };
