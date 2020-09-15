@@ -3,6 +3,8 @@ import axios from 'axios';
 import history from '../../services/history';
 import OrdersCard from '../../components/OrdersCard';
 
+const notFound = 404;
+
 const sendRequestOrders = async (setErrorStatus) => {
   const { token } = JSON.parse(localStorage.getItem('user'));
   const resp = await axios({
@@ -11,7 +13,7 @@ const sendRequestOrders = async (setErrorStatus) => {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
   })
     .catch(({ response: { status, data: { error: { message } } } }) => {
-      if (status === 404) {
+      if (status === notFound) {
         setErrorStatus('Você ainda não tem nenhum pedido.');
         return true;
       }
@@ -40,7 +42,8 @@ const Orders = () => {
   return (
     <div className="orders-container">
       {error
-        || data.map((orders, index) => <OrdersCard key={ orders.saleId } orders={ orders } index={ index } />)}
+        || data.map((orders,
+          index) => <OrdersCard key={ orders.saleId } orders={ orders } index={ index } />)}
     </div>
   );
 };

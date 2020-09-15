@@ -4,6 +4,8 @@ import history from '../services/history';
 
 import '../styles/RegisterPage.css';
 
+const numberTwelve = 12;
+const numberSix = 6;
 const MAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const NAME_REGEX = /[^A-Za-z ]/;
 
@@ -26,6 +28,20 @@ const textAndCheckboxInputs = (type, text, valueOrChecked, setValue, testId, rol
   </label>
 );
 
+const registerRedirect = (role) => (
+  role === 'client'
+    ? history.push('/products')
+    : history.push('/admin/orders')
+);
+
+const addLocalStorage = ({
+  name, email, token, role,
+}) => {
+  localStorage.setItem('user', JSON.stringify({
+    name, email, token, role,
+  }));
+};
+
 const sendLoginRequest = async (email, password, setErrorMessage) => {
   const loginData = await axios({
     baseURL: 'http://localhost:3001/login',
@@ -37,7 +53,6 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
   })
     .catch(({ response }) => response);
-  // .catch(({ response: { status, data: { error: { message }}} }) => setErrorMessage(`Error: ${status}. ${message}`));
 
   if (!loginData) return setErrorMessage('Error: Falha de Conexão');
 
@@ -51,14 +66,6 @@ const sendLoginRequest = async (email, password, setErrorMessage) => {
   if (loginData) addLocalStorage(loginData.data);
 
   return loginData ? registerRedirect(loginData.data.role) : null; */
-};
-
-const addLocalStorage = ({
-  name, email, token, role,
-}) => {
-  localStorage.setItem('user', JSON.stringify({
-    name, email, token, role,
-  }));
 };
 
 const requestRegister = async ({
@@ -75,21 +82,16 @@ const requestRegister = async ({
     .catch(({ response }) => response);
 
   if (!resp) return setSuccessOrError({ message: 'Falha de conexão' });
-  if (!resp.data.error) return await sendLoginRequest(emailData, passData, setSuccessOrError);
+  if (!resp.data.error) return sendLoginRequest(emailData, passData, setSuccessOrError);
   return setSuccessOrError({ message: resp.data.error.message });
 };
 
-const registerRedirect = (role) => (
-  role === 'client'
-    ? history.push('/products')
-    : history.push('/admin/orders')
-);
-
 const verifyValues = (inputsData) => {
-  if (!inputsData.nameData || inputsData.nameData.length < 12 || typeof inputsData.nameData !== 'string' || inputsData.nameData.match(NAME_REGEX)) {
+  if (!inputsData.nameData || inputsData.nameData.length < numberTwelve || typeof inputsData.nameData !== 'string' || inputsData.nameData.match(NAME_REGEX)) {
     return { error: 'name' };
   }
-  if (!inputsData.passData || inputsData.passData.length < 6 || isNaN(inputsData.passData)) {
+  if (!inputsData.passData
+    || inputsData.passData.length < numberSix || isNaN(inputsData.passData)) {
     return { error: 'pass' };
   }
   if (!inputsData.emailData.match(MAIL_REGEX)) {

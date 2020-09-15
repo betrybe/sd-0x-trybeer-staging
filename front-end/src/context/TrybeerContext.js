@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 export const TrybeerContext = createContext();
 
+const numberZero = 0;
 export default function TrybeerProvider({ children }) {
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [totalQty, setTotalQty] = useState(0);
+  const [totalQty, setTotalQty] = useState(numberZero);
   const [ordersData, setOrdersData] = useState([]);
 
   const toggleSideMenu = () => setShowSideMenu(!showSideMenu);

@@ -4,12 +4,14 @@ import { ReactComponent as Remove } from '../images/Minus.svg';
 import { TrybeerContext } from '../context/TrybeerContext';
 import '../styles/CartAddOrRemoveButtons.css';
 
+const numberZero = 0;
+
 export default function CartAddOrRemoveButtons({
   index, product: {
     id, name, price, urlImage,
   },
 }) {
-  const [itemQty, setItemQty] = useState(0);
+  const [itemQty, setItemQty] = useState(numberZero);
   const [lastAction, setLastAction] = useState('null');
   const { shopCart: [, setTotalQty] } = useContext(TrybeerContext);
 
@@ -37,7 +39,7 @@ export default function CartAddOrRemoveButtons({
 
     const removeProduct = (currentCart) => {
       const cartRemovedItem = currentCart.filter((item) => item.id !== id);
-      if (itemQty === 0) return sendToLocalStorage(cartRemovedItem);
+      if (itemQty === numberZero) return sendToLocalStorage(cartRemovedItem);
 
       const currentCart2 = localStorage.getItem('cart');
       if (currentCart2 === '[]') return localStorage.removeItem('cart');
@@ -59,8 +61,8 @@ export default function CartAddOrRemoveButtons({
       const currentCart = JSON.parse(localStorage.getItem('cart'));
       if (lastAction === 'null') {
         const thisItem = currentCart && currentCart.find((product) => product.id === id);
-        if (thisItem === undefined) return setItemQty(0);
-        return thisItem ? setItemQty(thisItem.itemQty) : setItemQty(0);
+        if (thisItem === undefined) return setItemQty(numberZero);
+        return thisItem ? setItemQty(thisItem.itemQty) : setItemQty(numberZero);
       }
       if (lastAction === 'add') return addProduct(currentCart);
       return removeProduct(currentCart);
@@ -68,7 +70,8 @@ export default function CartAddOrRemoveButtons({
 
     const fetchTotalItemQty = () => {
       const currentCart = JSON.parse(localStorage.getItem('cart'));
-      const totalQty = currentCart ? currentCart.reduce((total, { itemQty }) => total + itemQty, 0) : 0;
+      const totalQty = currentCart ? currentCart.reduce((total,
+        { itemQty }) => total + itemQty, numberZero) : numberZero;
       setTotalQty(totalQty);
     };
 
@@ -84,7 +87,7 @@ export default function CartAddOrRemoveButtons({
           data-testid={ `${index}-product-minus` }
           onClick={ () => {
             setLastAction('remove');
-            return itemQty > 0 && setItemQty((qty) => qty - 1);
+            return itemQty > numberZero && setItemQty((qty) => qty - 1);
           } }
         >
           <Remove className="remove-btn" />

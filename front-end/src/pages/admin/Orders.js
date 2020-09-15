@@ -6,6 +6,8 @@ import checkLogin from '../../services/checkLogin';
 import history from '../../services/history';
 import '../../styles/AdminOrders.css';
 
+const numberZero = 0;
+const unauthorized = 401;
 export default function AdminOrders() {
   const [ordersData, setOrdersData] = useState([]);
 
@@ -18,7 +20,7 @@ export default function AdminOrders() {
         method: 'get',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
       })
-        .catch(({ response: { status } }) => status === 401 && history.push('/login'));
+        .catch(({ response: { status } }) => status === unauthorized && history.push('/login'));
       return ordersData && setOrdersData(ordersData.data);
     };
 
@@ -31,7 +33,7 @@ export default function AdminOrders() {
       <div className="admin-orders-content">
         <h1 className="admin-orders-header">Pedidos</h1>
         <div className="admin-orders-container">
-          {ordersData && ordersData.length !== 0 && ordersData.map((order, index) => (
+          {ordersData && ordersData.length !== numberZero && ordersData.map((order, index) => (
             <div className="admin-orders-card" key={ order.saleId }>
               <OrderCard orders={ order } index={ index } />
             </div>

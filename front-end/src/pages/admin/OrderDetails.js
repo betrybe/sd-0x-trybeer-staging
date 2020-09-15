@@ -7,7 +7,8 @@ import formatPriceFunc from '../../services/formatPriceFunc';
 import '../../styles/AdminOrderDetails.css';
 import AdminSideBar from '../../components/admin/AdminSideBar';
 
-const setStatusAsDelivered = async (saleId, token, setOrderDetails) => await axios({
+const unauthorized = 401;
+const setStatusAsDelivered = async (saleId, token, setOrderDetails) => axios({
   method: 'patch',
   baseURL: `http://localhost:3001/sales/${saleId}`,
   headers: { Accept: 'application/json', Authorization: token },
@@ -55,7 +56,8 @@ const renderProductData = (saleId, status, orderDetails, totalPrice) => (
 );
 
 export default function AdminOrdersDetails() {
-  const [{ orderDetails, orderDetails: [{ totalPrice, status, saleId }] }, setOrderDetails] = useState(
+  const [{ orderDetails, orderDetails: [{ totalPrice, status, saleId }] },
+    setOrderDetails] = useState(
     { orderDetails: [{ totalPrice: 0, status: 'Pendente', saleId: 0 }] },
   );
 
@@ -74,7 +76,7 @@ export default function AdminOrdersDetails() {
       })
         .catch((err) => {
           console.error(err.response);
-          return err.response.status === 401 && history.push('/login');
+          return err.response.status === unauthorized && history.push('/login');
         });
 
       return detailsData && setOrderDetails({ orderDetails: detailsData.data });
@@ -94,6 +96,7 @@ export default function AdminOrdersDetails() {
         {renderProductData(saleId, status, orderDetails, totalPrice)}
         {displaySendOrderBtn && (
           <button
+            type="button"
             data-testid="mark-as-delivered-btn"
             className="mark-as-delivered-btn"
             onClick={ () => setStatusAsDelivered(saleId, token, setOrderDetails) }

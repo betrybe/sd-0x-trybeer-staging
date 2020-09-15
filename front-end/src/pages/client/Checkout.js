@@ -4,6 +4,9 @@ import useRefreshTotalPrice from '../../hooks/useRefreshTotalPrice';
 import history from '../../services/history';
 import '../../styles/Checkout.css';
 
+const created = 201;
+const time = 2000;
+const numberZero = 0;
 const formatPrice = (totalPrice) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice);
 
 const interactiveFormField = (formName, label, type, formValidation) => (
@@ -19,30 +22,6 @@ const interactiveFormField = (formName, label, type, formValidation) => (
     />
   </label>
 );
-
-const sendProducts = async (deliveryAddress, deliveryNumber, setSalesStatus) => {
-  const productsData = JSON.parse(localStorage.getItem('cart')).map(({ id: productId, itemQty: quantity }) => ({ productId, quantity }));
-
-  const salesObject = { products: productsData, deliveryAddress, deliveryNumber };
-
-  const { token } = JSON.parse(localStorage.getItem('user'));
-
-  let error;
-
-  const salesRequest = await axios({
-    baseURL: 'http://localhost:3001/sales',
-    method: 'post',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
-    data: salesObject,
-  })
-    .catch(({ response: { status, data: { error: { message } } } }) => {
-      error = 1;
-      return statusHandler({ status, message }, setSalesStatus);
-    });
-
-  if (error !== 1) return statusHandler(salesRequest, setSalesStatus);
-  return null;
-};
 
 const statusHandler = ({ status, message }, setSalesStatus) => {
   const divStyleError = {
@@ -73,11 +52,11 @@ const statusHandler = ({ status, message }, setSalesStatus) => {
     animationFillMode: 'forwards',
   };
 
-  if (status === 201) {
+  if (status === created) {
     setTimeout(() => {
       localStorage.removeItem('cart');
       return history.push('/products');
-    }, 2000);
+    }, time);
 
     return setSalesStatus(
       <div style={ divStyleSucess } className="sales-status-container">
@@ -91,6 +70,30 @@ const statusHandler = ({ status, message }, setSalesStatus) => {
       <span>{`Erro código: ${status}, ${message}`}</span>
     </div>,
   );
+};
+
+const sendProducts = async (deliveryAddress, deliveryNumber, setSalesStatus) => {
+  const productsData = JSON.parse(localStorage.getItem('cart')).map(({ id: productId, itemQty: quantity }) => ({ productId, quantity }));
+
+  const salesObject = { products: productsData, deliveryAddress, deliveryNumber };
+
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  let error;
+
+  const salesRequest = await axios({
+    baseURL: 'http://localhost:3001/sales',
+    method: 'post',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: token },
+    data: salesObject,
+  })
+    .catch(({ response: { status, data: { error: { message } } } }) => {
+      error = 1;
+      return statusHandler({ status, message }, setSalesStatus);
+    });
+
+  if (error !== 1) return statusHandler(salesRequest, setSalesStatus);
+  return null;
 };
 
 const removeItem = (itemId, setCartData) => {
@@ -108,26 +111,27 @@ const removeItem = (itemId, setCartData) => {
   return setCartData(null);
 };
 
-const renderFormElements = ([setAdressValue, setStreetNumber, addressValue, streetNumber, salesStatus, setSalesStatus, totalPrice]) => (
-  <div className="address-form-container">
-    <div className="address-header-container">
-      <h3>Endereço</h3>
-      <div>{salesStatus}</div>
+const renderFormElements = ([setAdressValue, setStreetNumber, addressValue,
+  streetNumber, salesStatus, setSalesStatus, totalPrice]) => (
+    <div className="address-form-container">
+      <div className="address-header-container">
+        <h3>Endereço</h3>
+        <div>{salesStatus}</div>
+      </div>
+      <form className="address-form">
+        {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
+        {interactiveFormField('checkout-house-number-input', 'Número da casa:', 'number', setStreetNumber)}
+        <button
+          type="button"
+          data-testid="checkout-finish-btn"
+          className="checkout-finish-btn"
+          onClick={ () => sendProducts(addressValue, streetNumber, setSalesStatus) }
+          disabled={ !(addressValue && streetNumber && totalPrice) }
+        >
+          Finalizar Pedido
+        </button>
+      </form>
     </div>
-    <form className="address-form">
-      {interactiveFormField('checkout-street-input', 'Rua:', 'text', setAdressValue)}
-      {interactiveFormField('checkout-house-number-input', 'Número da casa:', 'number', setStreetNumber)}
-      <button
-        type="button"
-        data-testid="checkout-finish-btn"
-        className="checkout-finish-btn"
-        onClick={ () => sendProducts(addressValue, streetNumber, setSalesStatus) }
-        disabled={ !(addressValue && streetNumber && totalPrice) }
-      >
-        Finalizar Pedido
-      </button>
-    </form>
-  </div>
 );
 
 const renderProductsList = (cartData, setCartData, totalPrice) => (
@@ -146,7 +150,7 @@ const renderProductsList = (cartData, setCartData, totalPrice) => (
             <span className="spacing-span" />
             <span className="span-total-product-price" data-testid={ `${index}-product-total-value` }>{`${formatPrice(totalValue)}`}</span>
             <span data-testid={ `${index}-product-unit-price` } className="span-unit-price">{`(${formatPrice(price)} un)`}</span>
-            <button data-testid={ `${index}-removal-button` } className="item-removal-button" onClick={ () => removeItem(id, setCartData) }>X</button>
+            <button data-testid={ `${index}-removal-button` } type="button" className="item-removal-button" onClick={ () => removeItem(id, setCartData) }>X</button>
           </li>
         )) : <h2>Não há produtos no carrinho</h2>}
       </ul>
@@ -160,7 +164,7 @@ const renderProductsList = (cartData, setCartData, totalPrice) => (
 export default function Checkout() {
   const [cartData, setCartData] = useState([]);
   const [addressValue, setAdressValue] = useState('');
-  const [streetNumber, setStreetNumber] = useState(0);
+  const [streetNumber, setStreetNumber] = useState(numberZero);
   const [salesStatus, setSalesStatus] = useState('');
   const totalPrice = useRefreshTotalPrice(cartData);
 
@@ -170,7 +174,7 @@ export default function Checkout() {
 
     const getAddressInfoFromLocalStorage = () => (JSON.parse(localStorage.getItem('cart')) ? JSON.parse(localStorage.getItem('cart')) : null);
     const actualCart = getAddressInfoFromLocalStorage();
-    if (!actualCart || actualCart.length === 0) {
+    if (!actualCart || actualCart.length === numberZero) {
       setCartData(null);
       localStorage.removeItem('cart');
     }
@@ -180,7 +184,8 @@ export default function Checkout() {
   return (
     <div className="checkout-page-container">
       {renderProductsList(cartData, setCartData, totalPrice)}
-      {renderFormElements([setAdressValue, setStreetNumber, addressValue, streetNumber, salesStatus, setSalesStatus, totalPrice])}
+      {renderFormElements([setAdressValue, setStreetNumber,
+        addressValue, streetNumber, salesStatus, setSalesStatus, totalPrice])}
     </div>
   );
 }

@@ -15,7 +15,10 @@
     "rules": {
       "react/prop-types": "warn", //remover depois
       "consistent-return": ["off"],
-      //"indent": ["error", 2],
+      //"indent": ["error", 2], 
+      "no-restricted-globals": ["warn"], ///remover depois
+      "no-shadow": "warn", //remover depois
+      "import/no-extraneous-dependencies": "warn", //remover depois
       "linebreak-style": ["error", "unix"],
       "quotes": ["error", "single"],
       "semi": ["error", "always"],
