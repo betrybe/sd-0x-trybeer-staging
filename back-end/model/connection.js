@@ -24,5 +24,3 @@ function connection() {
 }
 
 module.exports = connection;
-
-
