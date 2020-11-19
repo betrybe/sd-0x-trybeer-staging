@@ -57,7 +57,7 @@ const insertSale = async (
       totalPrice,
       deliveryAddr,
       deliveryNumber,
-      saleDate,
+      'NOW()',
       'pending',
     )
     .execute();
